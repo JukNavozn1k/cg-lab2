@@ -7,10 +7,11 @@ def sign(x):
     return -1
 
 # ~ Алгоритмы отрисовки
-def draw_dot(x,y,col='black'): # в tkinter нет возможности отрисовать точку, а потому рисуем очень маленький круг
+def draw_dot(x,y,col='black'): 
     x1,y1 = x-1,y-1
     x2,y2 = x+1,y+1
-    canvas.create_oval(x1, y1, x2, y2,fill=col,width=1,outline=col)
+    canvas.create_oval(x1, y1, x2, y2,fill=col,width=1,outline=col) 
+   # canvas.create_line(x,y,x-1,y-1)
 
 def BresenhamV4(x1,y1,x2,y2): # четырёхсвязная развёртка 
     x,y,dx,dy,s1,s2 = x1,y1,abs(x2-x1),abs(y2-y1),sign(x2-x1),sign(y2-y1)
@@ -35,15 +36,29 @@ def BresenhamV4(x1,y1,x2,y2): # четырёхсвязная развёртка
 
 def Beizer(P):
     m = 4 # количество точек исходного многоугольника
-    R = [] # массив с координатами точек нового многоугольника 
-    xn,yn,t,step = P[0][0],P[0][1],0,0.01
-    for i in P:
-        tmp = []
-        for j in i:
-            tmp.append(j)
-        R.append(tmp)
-    print(R)
-    BresenhamV4(P[0][0],P[0][1],P[1][0],P[1][1])
+    xn,yn,t,step = P[0][0],P[0][1], 0 , 0.01
+
+
+    while True:
+        R = [] # массив с координатами точек нового многоугольника 
+        for i in P: # заполнение массива
+            tmp = []
+            for j in i:
+                tmp.append(j)
+            R.append(tmp)
+        
+        
+     
+        # вычисление точек
+        for j in range(m,1,-1):
+            for i in range(0,j-1):
+                R[i][0] = R[i][0] + round(t*(R[i+1][0]-R[i][0]))
+                R[i][1] = R[i][1] + round(t*(R[i+1][1]-R[i][1]))
+        BresenhamV4(R[0][0],R[0][1],xn,yn)
+        t = t + step
+        xn = R[0][0]
+        yn = R[0][1]
+        if t > 1: break
     pass        
      
 
@@ -55,7 +70,13 @@ def Beizer(P):
 def callback(event): # метод отслеживания нажатий
     global counter,coords,var
     coords.append([int(event.x),int(event.y)])
+    if counter == 1:
+        BresenhamV4(coords[0][0],coords[0][1],coords[1][0],coords[1][1])
+    if counter == 2:
+        BresenhamV4(coords[1][0],coords[1][1],coords[2][0],coords[2][1])
     if counter >= 3: 
+
+        BresenhamV4(coords[2][0],coords[2][1],coords[3][0],coords[3][1])
         print('Current click: ',counter + 1)
         print(coords)
         Beizer(coords)
