@@ -10,8 +10,8 @@ def sign(x):
 def draw_dot(x,y,col='black'): 
     x1,y1 = x-1,y-1
     x2,y2 = x+1,y+1
-    canvas.create_oval(x1, y1, x2, y2,fill=col,width=1,outline=col) 
-   # canvas.create_line(x,y,x-1,y-1)
+    #canvas.create_oval(x1, y1, x2, y2,fill=col,width=1,outline=col) 
+    canvas.create_line(x,y,x-1,y-1)
 
 def BresenhamV4(x1,y1,x2,y2): # четырёхсвязная развёртка 
     x,y,dx,dy,s1,s2 = x1,y1,abs(x2-x1),abs(y2-y1),sign(x2-x1),sign(y2-y1)
@@ -40,9 +40,7 @@ def Beizer(P):
 
     while True:
         R = [] + P # массив с координатами точек нового многоугольника 
-        
-        
-     
+       
         # вычисление точек
         for j in range(m,1,-1):
             for i in range(0,j-1):
@@ -62,22 +60,22 @@ def Beizer(P):
 def callback(event): # метод отслеживания нажатий
     global counter,coords,var
     coords.append([int(event.x),int(event.y)])
-    if counter == 1:
-        BresenhamV4(coords[0][0],coords[0][1],coords[1][0],coords[1][1])
-    if counter == 2:
-        BresenhamV4(coords[1][0],coords[1][1],coords[2][0],coords[2][1])
-    if counter >= 3: 
-
-        BresenhamV4(coords[2][0],coords[2][1],coords[3][0],coords[3][1])
-        print('Current click: ',counter + 1)
-        print(coords)
+    if len(coords) > 1:
+        tmp = len(coords)
+        BresenhamV4(coords[tmp-2][0],coords[tmp-2][1],coords[tmp-1][0],coords[tmp-1][1])
+         
+    print('Current click: ',counter + 1)
+    counter += 1
+def drawBeizer(event): # правая кнопка мыши, отрисовка бейзера
+    global counter,coords,var
+    if counter <= 2:
+         print('Ошибка: накликайте ещё точек')
+    else:
+        print('m  = ',counter + 1)
+        print('coords = ', coords)
         Beizer(coords)
         coords = []
         counter = 0
-        
-    else: 
-        print('Current click: ',counter + 1)
-        counter += 1
 
 def clear(): # очистить холст
     canvas.delete("all") 
@@ -92,11 +90,12 @@ if __name__ == "__main__":
     # Инициализация важных переменных
     counter = 0 # переменная, в которой хранится номер клика мыши
     coords = [] # координаты точек
-    mode = {'Beizer':Beizer} # массив функциий (алгоритмов по которым будет делаться отрисовка)
+    
 
     # Инициализация и настройка холста
     canvas= Canvas(root, width=800, height=600,bg='white')
     canvas.bind("<Button-1>", callback)
+    canvas.bind("<Button-3>", drawBeizer)
     canvas.pack()
    
 
