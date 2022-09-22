@@ -71,7 +71,7 @@ def drawBeizer(event): # правая кнопка мыши, отрисовка 
     if counter <= 2:
          print('Ошибка: накликайте ещё точек')
     else:
-        print('m  = ',counter + 1)
+        print('m  = ',counter)
         print('coords = ', coords)
         Beizer(coords)
         coords = []
