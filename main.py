@@ -36,7 +36,10 @@ def BresenhamV4(x1,y1,x2,y2): # четырёхсвязная развёртка
             e = e - 2*dx
     draw_dot(x,y)
 
-
+def drawAuxiliary(R):
+    for i in range(1,len(R)):
+        BresenhamV4(R[i-1][0],R[i-1][1],R[i][0],R[i][1])
+    
 def Beizer(P):
     m = len(P) # количество точек исходного многоугольника
     xn,yn,t,step = P[0][0],P[0][1], 0 , 0.01
@@ -49,9 +52,11 @@ def Beizer(P):
             for i in range(0,j-1):
                 R[i][0] = R[i][0] + round(t*(R[i+1][0]-R[i][0]))
                 R[i][1] = R[i][1] + round(t*(R[i+1][1]-R[i][1]))
+        if ac.get() == 1: drawAuxiliary(R)
         BresenhamV4(R[0][0],R[0][1],xn,yn)
         t,xn,yn = t + step, R[0][0] , R[0][1]
         if t > 1: break
+       
     pass        
      
 
@@ -107,6 +112,13 @@ if __name__ == "__main__":
                       onvalue = 1,
                       offvalue = 0)
     sbsmCBtn.pack()
+    # Вспомогательные многоугольники
+    ac = IntVar()
+    acCBtn = Checkbutton(root, text = "Auxiliary constructions",
+                      variable = ac,
+                      onvalue = 1,
+                      offvalue = 0)
+    acCBtn.pack()
 
 
     # Кнопка очистки очистка холста
