@@ -1,10 +1,8 @@
 from tkinter import *
+from methods import *
 import tkinter
 from time import sleep
 
-def sign(x):
-    if x >= 0: return 1
-    return -1
 
 # ~ Алгоритмы отрисовки
 def draw_dot(x,y,col='black'):
