@@ -1,16 +1,21 @@
 from tkinter import *
 import tkinter
-
+from time import sleep
 
 def sign(x):
     if x >= 0: return 1
     return -1
 
 # ~ Алгоритмы отрисовки
-def draw_dot(x,y,col='black'): 
+def draw_dot(x,y,col='black'):
+    global root,sbsm
     x1,y1 = x-1,y-1
     x2,y2 = x+1,y+1
-    canvas.create_oval(x1, y1, x2, y2,fill=col,width=1,outline=col) 
+    if sbsm.get() == 0:canvas.create_oval(x1, y1, x2, y2,fill=col,width=1,outline=col) 
+    else:
+        sleep(0.001)
+        canvas.create_oval(x1, y1, x2, y2,fill='red',width=1,outline='red') 
+        root.update()
     #canvas.create_line(x,y,x-1,y-1)
 
 def BresenhamV4(x1,y1,x2,y2): # четырёхсвязная развёртка 
@@ -97,7 +102,14 @@ if __name__ == "__main__":
     canvas.bind("<Button-1>", callback)
     canvas.bind("<Button-3>", drawBeizer)
     canvas.pack()
-   
+    # Step by step mode (animation)
+    sbsm = IntVar()
+    sbsmCBtn = Checkbutton(root, text = "Step by step mode",
+                      variable = sbsm,
+                      onvalue = 1,
+                      offvalue = 0)
+    sbsmCBtn.pack()
+
 
     # Кнопка очистки очистка холста
     clsBtn = tkinter.Button(root,text='Очистить холст',command=clear)
