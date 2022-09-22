@@ -10,8 +10,8 @@ def sign(x):
 def draw_dot(x,y,col='black'): 
     x1,y1 = x-1,y-1
     x2,y2 = x+1,y+1
-    #canvas.create_oval(x1, y1, x2, y2,fill=col,width=1,outline=col) 
-    canvas.create_line(x,y,x-1,y-1)
+    canvas.create_oval(x1, y1, x2, y2,fill=col,width=1,outline=col) 
+    #canvas.create_line(x,y,x-1,y-1)
 
 def BresenhamV4(x1,y1,x2,y2): # четырёхсвязная развёртка 
     x,y,dx,dy,s1,s2 = x1,y1,abs(x2-x1),abs(y2-y1),sign(x2-x1),sign(y2-y1)
