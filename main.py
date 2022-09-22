@@ -1,5 +1,3 @@
-from hashlib import shake_128
-
 from tkinter import *
 import tkinter
 
@@ -14,8 +12,38 @@ def draw_dot(x,y,col='black'): # в tkinter нет возможности отр
     x2,y2 = x+1,y+1
     canvas.create_oval(x1, y1, x2, y2,fill=col,width=1,outline=col)
 
+def BresenhamV4(x1,y1,x2,y2): # четырёхсвязная развёртка 
+    x,y,dx,dy,s1,s2 = x1,y1,abs(x2-x1),abs(y2-y1),sign(x2-x1),sign(y2-y1)
+    l = None
+    if dy<dx: l = False
+    else:
+        l = True
+        dx,dy = dy,dx
+    e = 2*dy-dx
+    for i in range(1,dx+dy):
+        draw_dot(x,y)
+        if e < 0:
+            if l: y = y + s2
+            else: x = x + s1
+            e = e+2*dy
+        else:
+            if l : x = x + s1
+            else: y = y + s2
+            e = e - 2*dx
+    draw_dot(x,y)
 
-def Beizer(step,m,R,P):
+
+def Beizer(P):
+    m = 4 # количество точек исходного многоугольника
+    R = [] # массив с координатами точек нового многоугольника 
+    xn,yn,t,step = P[0][0],P[0][1],0,0.01
+    for i in P:
+        tmp = []
+        for j in i:
+            tmp.append(j)
+        R.append(tmp)
+    print(R)
+    BresenhamV4(P[0][0],P[0][1],P[1][0],P[1][1])
     pass        
      
 
@@ -30,7 +58,7 @@ def callback(event): # метод отслеживания нажатий
     if counter >= 3: 
         print('Current click: ',counter + 1)
         print(coords)
-        # Simple(coords[0][0],coords[0][1],coords[1][0],coords[1][1]) # P.S сделать так чтобы пользователь мог выбирать режим посредством тыкания кнопок
+        Beizer(coords)
         coords = []
         counter = 0
         
