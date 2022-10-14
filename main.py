@@ -1,8 +1,11 @@
 from tkinter import *
-from methods import *
 import tkinter
 from time import sleep
-
+# ~ Дополнительные методы
+def sign(x):
+    if x >= 0: return 1
+    return -1
+# Дополнительные методы ~
 
 # ~ Алгоритмы отрисовки
 def draw_dot(x,y,col='black'):
@@ -14,7 +17,6 @@ def draw_dot(x,y,col='black'):
         sleep(0.001)
         canvas.create_oval(x1, y1, x2, y2,fill='red',width=1,outline='red') 
         root.update()
-    #canvas.create_line(x,y,x-1,y-1)
 
 def BresenhamV4(x1,y1,x2,y2): # четырёхсвязная развёртка 
     x,y,dx,dy,s1,s2 = x1,y1,abs(x2-x1),abs(y2-y1),sign(x2-x1),sign(y2-y1)
